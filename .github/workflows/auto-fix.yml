@@ -1,0 +1,31 @@
+name: Auto-Fix Common Issues
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint --fix
+        run: npm run lint -- --fix || true
+      - name: Run Prettier --write
+        run: npx prettier --write . || true
+      - name: Fix vulnerabilities
+        run: npm audit fix || true
+      - name: Commit and push fixes
+        run: |
+          git config --global user.email "ci-bot@yourdomain.com"
+          git config --global user.name "CI Bot"
+          git add .
+          git commit -m "Auto-fix: lint, format, vulnerabilities" || true
+          git push || true
