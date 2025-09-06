@@ -1,100 +1,338 @@
-# BoDiGi-resume-WE-AI Platform Setup Guide
+# BoDiGi IWork - Professional Video Creation & Odds Analysis Platform
 
-This guide provides a detailed, step-by-step process to set up a high-tech platform using Azure, Kubernetes, and trending resources. It covers features, architecture, and implementation best practices.
+🚀 **A comprehensive platform for video content creation, professional editing, and odds analysis built with modern web technologies**
+
+BoDiGi IWork is a full-featured application that combines professional video editing capabilities with intelligent odds calculation tools, designed for content creators, analysts, and professionals who need powerful media tools.
+
+## 🎯 Core Features
+
+### 🎬 Professional Video Editor
+- **Multi-track Timeline**: Professional video editing with multiple tracks
+- **Advanced Effects**: 15+ video effects (blur, brightness, contrast, transitions)
+- **Text Overlays**: Custom text with fonts, colors, and timing
+- **Audio Mixing**: Professional audio controls with effects
+- **Export System**: Multiple formats and quality settings
+- **Real-time Preview**: Live video preview with effects
+
+### 📊 Odds Calculator
+- **Intelligent Analysis**: AI-powered odds calculation
+- **Probability Engine**: Advanced probability algorithms
+- **Real-time Updates**: Live odds computation
+- **Historical Tracking**: Usage analytics and trends
+
+### 👥 User Management
+- **Secure Authentication**: Multiple auth providers
+- **Role-based Access**: Admin and user permissions
+- **Profile Management**: User profiles and preferences
+- **Subscription System**: Tiered access control
+
+### 🎛️ Admin Dashboard
+- **User Analytics**: Comprehensive user metrics
+- **Content Management**: Video and odds data oversight
+- **System Monitoring**: Performance and usage tracking
+- **Research Tools**: Advanced analysis capabilities
+
+## 🛠 Technology Stack
+
+### Frontend
+- **React 18** with TypeScript and Vite
+- **Tailwind CSS** with shadcn/ui components
+- **Framer Motion** for animations
+- **React Hook Form** with Zod validation
+- **Wouter** for client-side routing
+- **TanStack Query** for state management
+
+### Backend
+- **Node.js** with Express and TypeScript
+- **PostgreSQL** with Drizzle ORM
+- **JWT Authentication** with Passport.js
+- **Multer** for file uploads
+- **FFmpeg** for video processing
+- **Sharp** for image processing
+
+### AI & Processing
+- **Google Gemini AI** for intelligent analysis
+- **OpenAI Integration** for advanced features
+- **Jimp** for image manipulation
+- **FFmpeg-static** for video processing
+
+### Integrations
+- **Stripe** for payments and subscriptions
+- **SendGrid** for email notifications
+- **Slack** for team communication
+- **Google APIs** for enhanced functionality
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm
+- PostgreSQL database
+- FFmpeg (for video processing)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/bobbiedigital2025/BoDiGi-resume-WE-AI.git
+   cd BoDiGi-resume-WE-AI
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. **Configure database**
+   ```bash
+   npm run db:push
+   ```
+
+5. **Start development servers**
+   ```bash
+   # Backend server
+   npm run dev
+
+   # Frontend (in another terminal)
+   npx vite --port 5173
+   ```
+
+### Environment Variables
+
+```env
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/bodigi_iwork
+
+# Authentication
+JWT_SECRET=your_jwt_secret_here
+SESSION_SECRET=your_session_secret_here
+
+# AI Services
+GEMINI_API_KEY=your_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+# Payment Processing
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# Email Service
+SENDGRID_API_KEY=your_sendgrid_api_key
+
+# External Services
+SLACK_BOT_TOKEN=your_slack_bot_token
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+```
+
+## 🏗 Architecture Overview
+
+### Application Structure
+```
+/src                    # Frontend React application
+  /components/          # Reusable UI components
+    /ui/               # shadcn/ui components
+    /AdvancedEffects.tsx    # Video effects panel
+    /AudioMixer.tsx         # Audio mixing controls
+    /VideoEditor.tsx        # Basic video editor
+    /FullVideoEditor.tsx    # Professional video editor
+  /features/           # Feature-specific components
+    /odds/             # Odds calculator components
+    /admin/            # Admin dashboard components
+  /pages/              # Page components
+  /lib/                # Utilities and helpers
+
+/server                 # Backend Express application
+  /routes/             # API route handlers
+    /users.ts          # User management APIs
+    /videos.ts         # Video processing APIs
+    /odds.ts           # Odds calculation APIs
+  /db/                 # Database configuration
+  /index.ts            # Main server entry point
+
+/shared                 # Shared types and schemas
+  /schema.ts           # Database schemas and types
+
+/public                 # Static assets
+```
+
+### API Endpoints
+
+#### User Management
+```
+GET    /api/users           # List users
+POST   /api/users           # Create user
+PUT    /api/users/:id       # Update user
+DELETE /api/users/:id       # Delete user
+```
+
+#### Video Processing
+```
+GET    /api/videos          # List videos
+POST   /api/videos          # Upload video
+PUT    /api/videos/:id      # Update video
+DELETE /api/videos/:id      # Delete video
+POST   /api/videos/generate # Generate video from frames
+```
+
+#### Odds Calculator
+```
+GET    /api/odds            # Get odds data
+POST   /api/odds/calculate  # Calculate odds
+GET    /api/odds/history    # Get calculation history
+```
+
+#### Admin
+```
+GET    /api/admin/users     # Admin user management
+GET    /api/admin/analytics # System analytics
+POST   /api/admin/research  # Research operations
+```
+
+## 🎬 Video Editor Features
+
+### Professional Editing Tools
+- **Timeline Editor**: Multi-track video editing with drag-and-drop
+- **Effects Library**: 15+ professional video effects
+- **Text Overlays**: Custom text with advanced styling options
+- **Audio Mixing**: Professional audio controls and effects
+- **Export Options**: Multiple formats (MP4, WebM, MOV)
+
+### Advanced Features
+- **Keyframe Animation**: Smooth transitions and effects
+- **Color Correction**: Professional color grading tools
+- **Speed Control**: Variable speed playback and editing
+- **Split & Trim**: Precise video editing controls
+- **Layer Management**: Organize video elements in layers
+
+## 📊 Odds Calculator Features
+
+### Intelligent Analysis
+- **Probability Engine**: Advanced statistical calculations
+- **Real-time Updates**: Live odds computation and updates
+- **Historical Data**: Track and analyze past calculations
+- **Export Reports**: Generate detailed analysis reports
+
+### Advanced Analytics
+- **Trend Analysis**: Identify patterns and trends
+- **Risk Assessment**: Calculate risk factors and probabilities
+- **Comparative Analysis**: Compare multiple scenarios
+- **Data Visualization**: Charts and graphs for insights
+
+## 👥 User Management
+
+### Authentication System
+- **Multiple Providers**: Email, Google, and custom authentication
+- **Role-based Access**: Admin, editor, and user roles
+- **Secure Sessions**: JWT-based session management
+- **Password Security**: bcrypt hashing and validation
+
+### Subscription Management
+- **Tiered Plans**: Free, Basic, and Pro plans
+- **Stripe Integration**: Secure payment processing
+- **Usage Tracking**: Monitor feature usage and limits
+- **Auto-renewal**: Automatic subscription management
+
+## 🎛️ Admin Dashboard
+
+### Analytics & Monitoring
+- **User Metrics**: Track user engagement and activity
+- **System Performance**: Monitor server and application health
+- **Revenue Analytics**: Subscription and payment tracking
+- **Content Analytics**: Video and odds data insights
+
+### Management Tools
+- **User Administration**: Manage user accounts and permissions
+- **Content Moderation**: Review and moderate user content
+- **System Configuration**: Configure application settings
+- **Backup & Recovery**: Data backup and restoration tools
+
+## 🚀 Deployment
+
+### Development
+```bash
+npm run dev          # Start development server
+npm run check        # TypeScript type checking
+npm run build        # Build for production
+```
+
+### Production
+```bash
+npm run build        # Build frontend and backend
+npm start           # Start production server
+```
+
+### Docker Deployment
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+npm run test         # Unit tests
+npm run test:e2e     # End-to-end tests
+npm run test:coverage # Test coverage report
+```
+
+### Manual Testing Checklist
+- [ ] User registration and login
+- [ ] Video upload and processing
+- [ ] Video editing functionality
+- [ ] Odds calculation accuracy
+- [ ] Admin dashboard access
+- [ ] Export functionality
+- [ ] Mobile responsiveness
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Use TypeScript for all new code
+- Follow ESLint configuration
+- Write tests for new features
+- Update documentation for API changes
+- Use conventional commit messages
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🆘 Support
+
+- **Documentation**: Check the `/docs` folder for detailed guides
+- **Issues**: [GitHub Issues](https://github.com/bobbiedigital2025/BoDiGi-resume-WE-AI/issues)
+- **Email**: support@bodigidigital.com
+
+## 🙏 Acknowledgments
+
+- **React Team** for the amazing frontend framework
+- **Vercel** for hosting and deployment platform
+- **shadcn/ui** for beautiful UI components
+- **Open Source Community** for incredible tools and libraries
+
 ---
 
-### 1. App Features & Architecture
-- **Portfolio Management:** Display and manage user portfolios.
-- **Odds Calculator:** Calculate and display odds.
-- **Admin Dashboard:** Admin login, research chat, and management.
-- **Video Creation:** Create and manage video content.
-- **User Management:** Secure authentication and user roles.
+**BoDiGi IWork** - Professional video creation and odds analysis platform built with modern web technologies.
 
-#### Azure Features
-- App Service (hosting)
-- SQL Database or Cosmos DB (database)
-- Blob Storage (media)
-- Active Directory B2C (authentication)
-- Functions (serverless backend)
-- DevOps (CI/CD)
-- Monitor & Insights (logging)
-- Key Vault (secrets)
-
-#### Walli Features (Digital Wallet)
-- Wallet integration
-- Secure payments
-- Transaction history
-- Compliance
-
-#### Kubernetes (AKS)
-- Container orchestration
-- Auto-scaling
-- Rolling updates
-- Service mesh
-- Monitoring/logging
-- Secrets management
-
-#### Trending Resources
-- AI/ML (Cognitive Services)
-- Real-time (SignalR)
-- Microservices (AKS)
-- Serverless (Functions)
-- API Management
-- Infrastructure as Code (Terraform/Bicep)
-
----
-
-### 2. Step-by-Step Setup Guide
-
-#### 1. Project Initialization
-- Create a new repository.
-- Initialize with Vite + React + TypeScript.
-- Set up TailwindCSS for styling.
-
-#### 2. Azure Setup
-- Create an Azure account.
-- Set up Azure App Service for web hosting.
-- Set up Azure SQL or Cosmos DB for your database.
-- Create Azure Blob Storage for media files.
-- Set up Azure Active Directory B2C for authentication.
-
-#### 3. Backend/API
-- Use Node.js/Express or Azure Functions for backend logic.
-- Connect backend to Azure SQL/Cosmos DB.
-- Implement RESTful APIs for portfolio, odds, user management, and video features.
-
-#### 4. Frontend Development
-- Build React components for all features (portfolio, odds calculator, admin, video).
-- Connect frontend to backend APIs.
-- Implement authentication using Azure AD B2C.
-
-#### 5. Containerization & Kubernetes
-- Write Dockerfiles for frontend and backend.
-- Push images to Azure Container Registry.
-- Set up Azure Kubernetes Service (AKS).
-- Deploy containers to AKS with proper scaling and networking.
-
-#### 6. CI/CD Pipeline
-- Use Azure DevOps to set up pipelines for build, test, and deploy.
-- Automate deployments to AKS and App Service.
-
-#### 7. Advanced Features
-- Integrate Azure Cognitive Services for AI features.
-- Set up SignalR for real-time communication.
-- Add payment/wallet integration (Walli or Stripe).
-
-#### 8. Monitoring & Security
-- Enable Azure Monitor and Application Insights.
-- Use Azure Key Vault for secrets.
-- Set up role-based access control.
-
-#### 9. Documentation & Testing
-- Write user and developer documentation.
-- Set up automated tests (unit, integration, e2e).
-
----
-
----
+Built with ❤️ by Bobbie Digital
 
 ## 3. Best Practices: Frontend & Backend Separation
 
