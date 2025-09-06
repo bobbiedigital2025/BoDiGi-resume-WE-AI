@@ -9,6 +9,7 @@ import {
   text,
   integer,
   boolean,
+  decimal,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -298,6 +299,102 @@ export const insertTrialSchema = createInsertSchema(trials).omit({
   createdAt: true,
 });
 
+// Video Generation Tables
+export const videos = pgTable("videos", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  title: varchar("title"),
+  prompt: text("prompt").notNull(),
+  description: text("description"),
+  duration: integer("duration").notNull(), // in seconds (30, 60, 180)
+  style: varchar("style").notNull(), // cinematic, animation, documentary, social, promotional
+  resolution: varchar("resolution").notNull().default("1080p"), // 720p, 1080p, 4k
+  fps: integer("fps").notNull().default(30), // 24, 30, 60
+  aspectRatio: varchar("aspect_ratio").notNull().default("16:9"), // 16:9, 9:16, 1:1, 4:3
+  status: varchar("status").notNull().default("pending"), // pending, processing, completed, failed
+  progress: integer("progress").default(0), // 0-100
+  filePath: varchar("file_path"),
+  thumbnailPath: varchar("thumbnail_path"),
+  fileSize: integer("file_size"), // in bytes
+  metadata: jsonb("metadata"), // stores scenes, config, etc.
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+export const videoScenes = pgTable("video_scenes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  videoId: varchar("video_id").notNull().references(() => videos.id, { onDelete: "cascade" }),
+  sceneIndex: integer("scene_index").notNull(),
+  type: varchar("type").notNull(), // intro, main, outro, development, climax, etc.
+  duration: integer("duration").notNull(), // in seconds
+  description: text("description").notNull(),
+  imagePath: varchar("image_path"),
+  audioPath: varchar("audio_path"),
+  effects: jsonb("effects"), // transitions, filters, etc.
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const videoEdits = pgTable("video_edits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  videoId: varchar("video_id").notNull().references(() => videos.id, { onDelete: "cascade" }),
+  operation: varchar("operation").notNull(), // trim, add_text, add_overlay, add_audio, etc.
+  parameters: jsonb("parameters").notNull(), // operation-specific parameters
+  appliedAt: timestamp("applied_at").notNull().defaultNow(),
+  resultPath: varchar("result_path"), // path to edited video file
+});
+
+export const videoTemplates = pgTable("video_templates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  category: varchar("category").notNull(), // business, social, educational, entertainment
+  duration: integer("duration").notNull(),
+  style: varchar("style").notNull(),
+  scenes: jsonb("scenes").notNull(), // template scene structure
+  isPublic: boolean("is_public").default(true),
+  createdBy: varchar("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  usageCount: integer("usage_count").default(0),
+});
+
+export const videoShares = pgTable("video_shares", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  videoId: varchar("video_id").notNull().references(() => videos.id, { onDelete: "cascade" }),
+  shareToken: varchar("share_token").unique().notNull(),
+  expiresAt: timestamp("expires_at"),
+  viewCount: integer("view_count").default(0),
+  isPublic: boolean("is_public").default(false),
+  allowDownload: boolean("allow_download").default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Validation schemas for videos
+export const insertVideoSchema = createInsertSchema(videos, {
+  prompt: z.string().min(10, "Prompt must be at least 10 characters"),
+  duration: z.number().refine(val => [30, 60, 180].includes(val), "Duration must be 30, 60, or 180 seconds"),
+  style: z.enum(["cinematic", "animation", "documentary", "social", "promotional"]),
+  resolution: z.enum(["720p", "1080p", "4k"]),
+  fps: z.enum(["24", "30", "60"]),
+  aspectRatio: z.enum(["16:9", "9:16", "1:1", "4:3"]),
+});
+
+export const insertVideoSceneSchema = createInsertSchema(videoScenes, {
+  description: z.string().min(5, "Scene description must be at least 5 characters"),
+  duration: z.number().min(1, "Scene duration must be at least 1 second"),
+});
+
+export const insertVideoEditSchema = createInsertSchema(videoEdits, {
+  operation: z.enum(["trim", "add_text", "add_overlay", "add_audio", "add_transition", "adjust_speed"]),
+});
+
+export const insertVideoTemplateSchema = createInsertSchema(videoTemplates, {
+  name: z.string().min(3, "Template name must be at least 3 characters"),
+  category: z.enum(["business", "social", "educational", "entertainment"]),
+});
+
+export const insertVideoShareSchema = createInsertSchema(videoShares);
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -323,4 +420,14 @@ export type IntegrationConnection = typeof integrationConnections.$inferSelect;
 export type InsertResumeExport = z.infer<typeof insertResumeExportSchema>;
 export type ResumeExport = typeof resumeExports.$inferSelect;
 export type InsertTrial = z.infer<typeof insertTrialSchema>;
+export type Video = typeof videos.$inferSelect;
+export type InsertVideo = z.infer<typeof insertVideoSchema>;
+export type VideoScene = typeof videoScenes.$inferSelect;
+export type InsertVideoScene = z.infer<typeof insertVideoSceneSchema>;
+export type VideoEdit = typeof videoEdits.$inferSelect;
+export type InsertVideoEdit = z.infer<typeof insertVideoEditSchema>;
+export type VideoTemplate = typeof videoTemplates.$inferSelect;
+export type InsertVideoTemplate = z.infer<typeof insertVideoTemplateSchema>;
+export type VideoShare = typeof videoShares.$inferSelect;
+export type InsertVideoShare = z.infer<typeof insertVideoShareSchema>;
 export type Trial = typeof trials.$inferSelect;
