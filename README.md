@@ -4,6 +4,20 @@
 
 BoDiGi IWork is a full-featured application that combines professional video editing capabilities with intelligent odds calculation tools, designed for content creators, analysts, and professionals who need powerful media tools.
 
+## 🚀 Quick Start
+
+**Get started in 3 steps:**
+
+1. **Install dependencies**: `npm install`
+2. **Start backend**: `npm run dev`  
+3. **Start frontend** (in another terminal): `npx vite --port 5173`
+
+Access the app at http://localhost:5173 - No database required! Works with demo data out of the box.
+
+📖 **See [QUICKSTART.md](./QUICKSTART.md)** for detailed setup instructions
+
+☁️ **See [NETLIFY_DEPLOYMENT.md](./NETLIFY_DEPLOYMENT.md)** for automatic deployment to Netlify
+
 ## 🎯 Core Features
 
 ### 🎬 Professional Video Editor
